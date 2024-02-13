@@ -1,12 +1,22 @@
 import React, { useRef, useState } from 'react'
 import Header from './Header'
 import { checkValidData } from '../utils/validate'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../utils/firebase';
+import { useNavigate } from 'react-router-dom';
+import { updateProfile } from "firebase/auth";
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice'
 
 const Login = () => {
+
+    const navigate = useNavigate()
 
     const [isSignInForm, setIsSignInForm] = useState(true)
 
     const [errorMessage, setErrorMessage] = useState(null)
+
+    const dispatch = useDispatch()
 
     const name = useRef(null)
 
@@ -22,11 +32,72 @@ const Login = () => {
 
     // Validate the form
 
-     const message = checkValidData(name.current.value, email.current.value, password.current.value)
+     const message = checkValidData(email.current.value, password.current.value)
 
      setErrorMessage(message)
 
      //Proceed to Sign in or Sign Out after passing validation
+
+     if(message == null){
+        // Sign Up Logic from firebase doc
+        if(!isSignInForm){
+            createUserWithEmailAndPassword(
+                auth, 
+                email.current.value, 
+                password.current.value
+            )
+            .then((userCredential) => {
+                    const user = userCredential.user;
+                    // Update user logic
+                    updateProfile(auth.currentUser, {
+                        displayName: name.current.value, photoURL: "https://avatars.githubusercontent.com/u/107959364?v=4"
+                      }).then(() => {
+                        //Update our Redux store
+                        
+                        const {uid, email, displayName, photoURL}= auth.currentUser;
+
+                        dispatch (
+                            addUser({
+                            uid:uid,
+                            email:email,
+                            displayName:displayName,
+                            photoURL: photoURL,
+                        }))
+
+                        navigate("/browse")
+                      }).catch((error) => {
+                        setErrorMessage( errorMessage)
+                      });
+            })
+            .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMessage(errorCode + "-" + errorMessage)
+            });
+           
+        }
+        
+        // Sign In Logic from firebase doc
+        else{
+            signInWithEmailAndPassword(
+                auth, 
+                email.current.value, 
+                password.current.value
+            )
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user)
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                setErrorMessage(errorCode + "-" + errorMessage)
+            });
+
+             // if Sign Up is successful, navigate to browse page
+             navigate("/browse")
+        }
+     }
 
     }
 
@@ -56,7 +127,7 @@ const Login = () => {
                     className='py-1 px-1 w-full text-xs font-thin my-2 text-white bg-slate-900 border border-white rounded' 
                 /> 
                 <input 
-                    ref={password}
+                    ref={password}  
                     type='password' 
                     placeholder='Password'
                     className='my-2 p-1 px-2 w-full text-xs font-thin text-white bg-slate-900  border border-white rounded' 
