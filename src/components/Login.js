@@ -3,14 +3,13 @@ import Header from './Header'
 import { checkValidData } from '../utils/validate'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../utils/firebase';
-import { useNavigate } from 'react-router-dom';
 import { updateProfile } from "firebase/auth";
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice'
+import { photoURL, backgroundImg } from '../utils/constants';
+
 
 const Login = () => {
-
-    const navigate = useNavigate()
 
     const [isSignInForm, setIsSignInForm] = useState(true)
 
@@ -50,7 +49,8 @@ const Login = () => {
                     const user = userCredential.user;
                     // Update user logic
                     updateProfile(auth.currentUser, {
-                        displayName: name.current.value, photoURL: "https://avatars.githubusercontent.com/u/107959364?v=4"
+                        displayName: name.current.value, 
+                        photoURL: photoURL,
                       }).then(() => {
                         //Update our Redux store
                         
@@ -64,7 +64,6 @@ const Login = () => {
                             photoURL: photoURL,
                         }))
 
-                        navigate("/browse")
                       }).catch((error) => {
                         setErrorMessage( errorMessage)
                       });
@@ -77,7 +76,6 @@ const Login = () => {
            
         }
         
-        // Sign In Logic from firebase doc
         else{
             signInWithEmailAndPassword(
                 auth, 
@@ -85,8 +83,7 @@ const Login = () => {
                 password.current.value
             )
             .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(user)
+                const user = userCredential.user
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -94,8 +91,6 @@ const Login = () => {
                 setErrorMessage(errorCode + "-" + errorMessage)
             });
 
-             // if Sign Up is successful, navigate to browse page
-             navigate("/browse")
         }
      }
 
@@ -107,7 +102,7 @@ const Login = () => {
         <div className='absolute '>
             <img 
                 className='bg-gradient-to-b from-black'
-                src='https://assets.nflxext.com/ffe/siteui/vlv3/4da5d2b1-1b22-498d-90c0-4d86701dffcc/ea4e3067-609b-4f51-a5ae-88663802fbfc/NG-en-20240129-popsignuptwoweeks-perspective_alpha_website_medium.jpg'
+                src={backgroundImg}
                 alt='background-img'
             />
         </div>
