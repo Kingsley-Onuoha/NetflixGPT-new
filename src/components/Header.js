@@ -64,7 +64,7 @@ const Header = () => {
             src={netflixIcon}     
             alt='netflix-logo'
         />
-        {user && <div className='mr-3 flex items-center text-xs gap-x-2 text-gray-300 bg-black'>
+        {user && <div className='mr-7 flex items-center text-xs gap-x-2 text-gray-300 bg-black'>
           <h4 className='text-xs'>Hi  {user?.displayName}</h4>
           <img 
             className='w-7 h-7 rounded-xl '
