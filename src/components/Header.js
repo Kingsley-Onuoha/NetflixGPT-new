@@ -6,7 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
 import { addUser, removeUser } from '../utils/userSlice'
-import { netflixIcon } from '../utils/constants';
+import { SUPPOERTED_LANGUAGES, netflixIcon } from '../utils/constants';
+import { toggleGPTSearchView } from '../utils/gptSlice';
+import {changeLanguage} from '../utils/configSlice'
 
 
 const Header = () => {
@@ -14,6 +16,9 @@ const Header = () => {
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
+
+  //Subscribing to the store, to showGptSearch
+  const showGptSearch = useSelector((store)=>store.gpt.showGptSearch)
 
   // Subscribing to the Redux store
   const user = useSelector(store =>store.user)
@@ -57,6 +62,15 @@ const Header = () => {
     });
   }
 
+  //function which handles the click of the SearchGpt button
+  const handleGptsearchClick = ()=>{
+    dispatch(toggleGPTSearchView())
+  }
+
+  const handleLanguageChange = (e)=>{
+    dispatch(changeLanguage(e.target.value))
+  }
+
   return (
     <div className='flex absolute bg-gradient bg-gradient-to-b from-black z-10 w-screen items-center justify-between'>
         <img 
@@ -64,19 +78,39 @@ const Header = () => {
             src={netflixIcon}     
             alt='netflix-logo'
         />
-        {user && <div className='mr-7 flex items-center text-xs gap-x-2 text-gray-300 bg-black'>
+        {user && <div className='mr-4 flex items-center text-xs gap-x-2 text-gray-300 bg-black pr-2 px-2'>
+
+          {(showGptSearch && <div className=''>
+            <select
+              onChange={handleLanguageChange} 
+              className='p-2 bg-gray-900 text-white m-1'>
+              {SUPPOERTED_LANGUAGES.map(language =>
+              <option 
+                key={language.identifier} 
+                value={language.identifier}>
+                {language.name}
+              </option>)}
+            </select>
+          </div>
+)}
+
+          <button onClick={handleGptsearchClick} className="px-1.5 py-1.5 m-3 bg-white text-black font-bold rounded-lg hover:bg-gray-300">GPT Search</button>
+
           <h4 className='text-xs'>Hi  {user?.displayName}</h4>
+
           <img 
             className='w-7 h-7 rounded-xl '
             src={user?.photoURL}
             alt='userIcon'
           />
+
           <button
           onClick={handleSignOut}
           className='text-xs cursor-pointer bg-red-700 rounded-lg px-2 py-0.5 text-gray-300'
           >
             Sign Out
           </button>
+
         </div>}
     </div>
   )
