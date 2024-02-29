@@ -9,7 +9,7 @@ const GptSearch = () => {
     <div>
       <div className='fixed sm:absolute -z-10'>
             <img 
-                className='h-screen object-cover bg-gradient-to-b from-black'
+                className='h-screen w-screen object-cover bg-gradient-to-b from-black'
                 src={backgroundImg}
                 alt='background-img'
             />
