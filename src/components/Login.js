@@ -101,12 +101,12 @@ const Login = () => {
         <Header />
         <div className='absolute '>
             <img 
-                className='bg-gradient-to-b from-black'
+                className='bg-gradient-to-b from-black h-screen object-cover'
                 src={backgroundImg}
                 alt='background-img'
             />
         </div>
-        <form className=' absolute px-5 p-2 bg-black bg-opacity-80 w-1/3 my-12 mx-auto right-0 left-0 text-white' onSubmit={(e)=> e.preventDefault()}>
+        <form className=' absolute px-5 p-2 bg-black bg-opacity-80 w-[70%] sm:w-1/3 my-12 mx-auto right-0 left-0 text-white' onSubmit={(e)=> e.preventDefault()}>
             <div className=' p-2 items-center justify-center'>
                 <h1 className='font-bold text-sm my-2'>{ isSignInForm? 'Sign In' : 'Sign Up'}</h1>
                 {!isSignInForm && (<input
