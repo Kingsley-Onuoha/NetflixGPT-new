@@ -53,7 +53,7 @@ const GptSearchBar = () => {
         e.preventDefault()
       }}>
         <input ref={searchText} placeholder={lang[langKey].gptSearchPlaceholder} className='font-bold text-black p-2 m-2 col-span-9' type='text'/>
-        <button className='bg-red-600 text-white font-bold col-span-3 py-1 ml-0.5 m-2 rounded-lg' onClick={handleGptSearch}>{lang[langKey].search}</button>
+        <button className='bg-red-600 text-white text-sm font-bold col-span-3 py-1 ml-0.5 m-2 rounded-lg' onClick={handleGptSearch}>{lang[langKey].search}</button>
       </form>
     </div>
   )
