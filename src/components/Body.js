@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Login from './Login'
 import Browse from './Browse'
 import Error from './Error'
+import ClickedVideo from './ClickedVideo'
 import { createBrowserRouter} from 'react-router-dom'
 import { RouterProvider } from 'react-router-dom'
 
@@ -21,7 +22,7 @@ const Body = () => {
         {
           path: "/error",
           element: <Error />
-        }
+        },
     ])
 
   return (

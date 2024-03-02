@@ -6,7 +6,7 @@ export const checkValidData = (email, password)=>{
 
     if(!isEmailValid)return <p>Email is not valid</p>
 
-    if(!isPasswordValid) return <p>Password is not valid</p>
+    if(!isPasswordValid) return <p>Password must have a special key, capital and small letter and a number</p>
 
     return null
 

@@ -7,10 +7,12 @@ import usePopularMovies from '../hooks/usePopularMovies'
 import useTopRatedMovies from '../hooks/useTopRatedMovies'
 import GptSearch from './GptSearch'
 import { useSelector } from 'react-redux'
+import ClickedVideo from './ClickedVideo'
 
 
 
 const Browse = () => {
+  const click = useSelector(store=>store.movies.thumbnailClick)
 
   const showGptSearch = useSelector(store =>store.gpt.showGptSearch)
 
@@ -23,7 +25,9 @@ const Browse = () => {
   return (
     <div>
       <Header />
-      {showGptSearch ? <GptSearch /> :<><MainContainer /><SecondaryContainer /></>
+      {showGptSearch ? 
+      <GptSearch /> :
+      (click? <ClickedVideo /> :<><MainContainer /><SecondaryContainer /></>)
       }
     </div>
   )
